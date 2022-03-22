@@ -66,18 +66,20 @@ class GuessArea extends StatelessWidget {
 
   void fixPrevGuess(int rowNumber, List<String> prevGuesses) {
     if (prevGuesses.isNotEmpty) {
-      GuessRow prevActiveRow = guessRowList[rowNumber-1];
-      for (int i = 0; i < 5; i++) {
-        prevActiveRow.guessTileList[i].value = prevGuesses[rowNumber-1][i];
+      for (int j = 0; j < rowNumber; j++) {
+        GuessRow prevActiveRow = guessRowList[j];
+        for (int i = 0; i < 5; i++) {
+          prevActiveRow.guessTileList[i].value = prevGuesses[j][i];
+        }
       }
     }
   }
 
   void updateGuess(int rowNumber, String guess) {
-    GuessRow activeRow = guessRowList[rowNumber];
-    for (int i = 0; i < guess.length; i++) {
-      activeRow.guessTileList[i].value = guess[i];
-    }
+      GuessRow activeRow = guessRowList[rowNumber];
+      for (int i = 0; i < guess.length; i++) {
+        activeRow.guessTileList[i].value = guess[i];
+      }
   }
 
   List<GuessRow>guessRowList = [
