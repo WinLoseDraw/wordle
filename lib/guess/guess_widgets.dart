@@ -7,8 +7,10 @@ import 'package:untitled/keyboard/keyboard_manager.dart';
 
 class GuessTile extends StatelessWidget {
 
-  GuessTile({Key? key, this.value = ""}) : super(key: key);
+  GuessTile({Key? key, this.value = "", this.color = Colors.black, this.borderColor = Colors.grey}) : super(key: key);
 
+  Color borderColor;
+  Color color;
   String value;
 
   @override
@@ -18,7 +20,8 @@ class GuessTile extends StatelessWidget {
       margin: EdgeInsets.all(5.0),
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 3.0),
+        color: color,
+        border: Border.all(color: borderColor, width: 3.0),
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: SizedBox(
@@ -64,11 +67,13 @@ class GuessRow extends StatelessWidget {
 class GuessArea extends StatelessWidget {
   GuessArea({Key? key}) : super(key: key);
 
-  void fixPrevGuess(int rowNumber, List<String> prevGuesses) {
+  void fixPrevGuess(int rowNumber, List<String> prevGuesses, List<List<Color>> colors) {
     if (prevGuesses.isNotEmpty) {
       for (int j = 0; j < rowNumber; j++) {
         GuessRow prevActiveRow = guessRowList[j];
         for (int i = 0; i < 5; i++) {
+          prevActiveRow.guessTileList[i].color = colors[j][i];
+          prevActiveRow.guessTileList[i].borderColor = colors[j][i];
           prevActiveRow.guessTileList[i].value = prevGuesses[j][i];
         }
       }
@@ -95,7 +100,7 @@ class GuessArea extends StatelessWidget {
   Widget build(BuildContext context) {
 
     updateGuess(Provider.of<GuessManager>(context).currentGuessNumber, Provider.of<KeyboardManager>(context).currentValue);
-    fixPrevGuess(Provider.of<GuessManager>(context).currentGuessNumber, Provider.of<GuessManager>(context).guesses);
+    fixPrevGuess(Provider.of<GuessManager>(context).currentGuessNumber, Provider.of<GuessManager>(context).guesses, Provider.of<GuessManager>(context).colors);
 
     return Column(
       children: guessRowList,
